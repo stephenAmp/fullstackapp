@@ -1,0 +1,269 @@
+body{
+    background: #fafafa;
+}
+
+/* General modal styling */
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-content{
+    background-color:#fff;
+    padding:20px;
+    border-radius:8px;
+    width:300px;
+    text-align:center;
+}
+
+.btn-close-modal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    background: transparent;
+    border: 2px solid #333;
+    border-radius: 30px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-close-modal i {
+    font-size: 1rem; 
+  }
+  
+  .btn-close-modal:hover {
+    background: #333;
+    color: white;
+    border-color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-close-modal:active {
+    transform: scale(0.95); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  }
+  
+  .modal-btns {
+    display: flex;
+    gap: 1rem; 
+  }
+  
+  /* Yes Button - Affirmative green */
+  .btn-yes {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: #4caf50;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-yes:hover {
+    background: #66bb6a;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px); /* Slight lift effect */
+  }
+  
+  .btn-yes:active {
+    transform: translateY(0); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  }
+  
+  /* No Button - Neutral gray */
+  .btn-no {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    background: #f5f5f5;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-no:hover {
+    background: #e0e0e0;
+    border-color: #ccc;
+    transform: translateY(-1px); /* Slight lift effect */
+  }
+  
+  .btn-no:active {
+    transform: translateY(0); /* Reset on click */
+    background: #d5d5d5;
+  }
+  
+
+.add-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #4CAF50, #81C784); /* Gradient color */
+    border: none;
+    border-radius: 30px; /* Rounded edges */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .add-button i {
+    font-size: 1.2rem; /* Adjust icon size */
+  }
+  
+  .add-button:hover {
+    background: linear-gradient(135deg, #66BB6A, #A5D6A7); /* Hover color */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px); /* Slight lift effect */
+  }
+  
+  .add-button:active {
+    transform: translateY(0); /* Reset on click */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Softer shadow on click */
+  }
+
+  
+  .button-group {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  /* Reset Button - Subtle orange with outline */
+  .btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ff9800;
+    background: transparent;
+    border: 2px solid #ff9800;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-reset:hover {
+    background: #ff9800;
+    color: white;
+  }
+  
+  /* Reorder Button - Cool blue with subtle gradient */
+  .btn-reorder {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-reorder:hover {
+    background: linear-gradient(135deg, #64b5f6, #90caf9);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Save Button - Green with smooth appearance */
+  .btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-save:hover {
+    background: #66bb6a;
+  }
+  
+  .btn-clear-saved {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f44336;
+    background: transparent;
+    border: 2px solid #f44336;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-clear-saved:hover {
+    background: #f44336;
+    color: white;
+  }
+
+  .action-btns{
+    display:flex;
+    gap:1rem;
+  }
+
+  .btn-load {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #673ab7, #9575cd); 
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-load i {
+    font-size: 1.2rem; 
+  }
+  
+  .btn-load:hover {
+    background: linear-gradient(135deg, #9575cd, #d1c4e9); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px); 
+  }
+  
+  .btn-load:active {
+    transform: translateY(0); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  }
+  
