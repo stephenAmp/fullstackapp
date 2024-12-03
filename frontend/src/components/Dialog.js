@@ -1,5 +1,4 @@
- export default function Dialog(props){
-
+export default function Dialog(props){
     return(
         <>
             <div className="modal">
@@ -11,4 +10,6 @@
         </>
     )
 }
+
+
 

@@ -4,3 +4,8 @@ uvicorn
 sqlalchemy
 pymysql
 pthon-dotenv
+python-jose
+passlib
+fastapi-jwt-auth
+cryptography
+bcrypt

@@ -1,24 +1,26 @@
-import {useState,useEffect} from 'react'
+import {useState,useEffect,useRef} from 'react';
+import Dialog from './Dialog';
+import {getActivities} from '../api';
 import api from '../api'
-
 
 
 export default function AddTodo(){
     const [activity,setActivity] = useState('');
     const [activityList,setActivityList] = useState([])
+    const [deleteDialog,setDeleteDialog] = useState(false);
+    const activityToDelete = useRef(null)
 
 
-    let inputBoxEmpty;
-
-    if(activity === ''){
-        inputBoxEmpty = true
-    }else{
-        inputBoxEmpty = false
-    }
 
     const fetchActivity = async()=>{
         try{
-        const response = await api.get('/activities')
+            const token = localStorage.getItem('token');
+            if(!token){
+                <h1>401 Unauthorized!</h1>
+                throw new Error('No token found')
+                
+            }
+        const response = await getActivities(token)
         setActivityList(response.data)
         }catch(error){
             console.error(error?.message ||'Failed to retrieve activities' )
@@ -57,12 +59,10 @@ export default function AddTodo(){
         }
     }
     function handleDelete(id){
-        fetchDelete(id)
-        .then(result=>{
-            if(result.success===false){
-                console.error(result.message)
-            }
-        })
+        activityToDelete.current = id
+        setDeleteDialog(true)
+
+
     
     }
     
@@ -106,6 +106,31 @@ export default function AddTodo(){
             setActivity('')
         }
     }
+
+    function handleDeleteYes(id){
+        fetchDelete(id)
+        .then(result=>{
+            if(result.success===false){
+                console.error(result.message)
+            }
+            setDeleteDialog(!deleteDialog)
+
+        })
+    }
+    const DeleteModal =()=>{
+        return(
+            <>
+                <Dialog>
+                <i class="bi bi-exclamation-circle" style={{fontSize:'2em',color:"red"}}></i>
+                <p>Are you sure you want to delete added activity?</p>
+                <div className="modal-btns">
+                    <button className="btn-yes" onClick={()=>handleDeleteYes(activityToDelete.current)}>Yes</button>
+                    <button className="btn-no" onClick={()=>setDeleteDialog(false)}>No</button>
+                </div>
+                </Dialog>
+            </>
+        )
+    }
     return(
         <>
         <div className="container" style={{marginTop:10}}>   
@@ -113,13 +138,10 @@ export default function AddTodo(){
                 <label htmlFor='activity' className="form-label"><h3>Activity</h3></label>
                 <input id ='activity' className = 'form-control' type='text' value={activity} onKeyDown={handleKey} onChange={(e)=>setActivity(e.target.value)}/>
             </div>
-            {inputBoxEmpty ? (
-                    <button className='add-button' disabled><i className="bi bi-plus-circle"></i> Add</button>
-                ):(
-                    <button className="add-button" onClick={handleAdd}><i className="bi bi-plus-circle"></i>Add</button>
-                    )
-            }
-
+            <div>
+            <button className="add-button" onClick={handleAdd}><i className="bi bi-plus-circle"></i>Add</button>
+            </div>
+            <h1>To-Do Activities</h1>
 {activityList.length > 0 ? (
                 <ul>
                 {activityList.map((activity)=>(
@@ -132,9 +154,15 @@ export default function AddTodo(){
               </ul>
         ):(
             <div>
-                <i>No listed Activity present</i>
+                <i>No listed Activity added</i>
             </div>   
         )
+    }
+
+    {deleteDialog && 
+    
+        (<DeleteModal/>)
+    
     }
         </div> 
         </>
