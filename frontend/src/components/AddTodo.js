@@ -1,6 +1,7 @@
 import {useState,useEffect,useRef} from 'react';
 import Dialog from './Dialog';
 import {getActivities} from '../api';
+import { useNavigate } from 'react-router-dom';
 import api from '../api'
 
 
@@ -9,24 +10,31 @@ export default function AddTodo(){
     const [activityList,setActivityList] = useState([])
     const [deleteDialog,setDeleteDialog] = useState(false);
     const activityToDelete = useRef(null)
-
+    const navigate = useNavigate()
 
 
     const fetchActivity = async()=>{
         try{
+            
             const token = localStorage.getItem('token');
             if(!token){
-                <h1>401 Unauthorized!</h1>
                 throw new Error('No token found')
                 
             }
         const response = await getActivities(token)
         setActivityList(response.data)
         }catch(error){
+            if(error.response?.status === 401){
+                localStorage.removeItem('token')
+                navigate('/login/')
+            }
             console.error(error?.message ||'Failed to retrieve activities' )
             return {success:false, message:error?.message}
+                   
         }
     }
+
+    
     
     useEffect(()=>{
     
