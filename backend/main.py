@@ -5,11 +5,23 @@ from database import engine,sessionLocal;
 from sqlalchemy.orm import Session;
 from fastapi.middleware.cors import CORSMiddleware;
 from auth.auth_bearer import JWTBearer
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from auth.auth_handler import get_hashed_password,verify_password,create_access_token,decode_token;
+import os
 import models;
 
 #instantiate fastAPI
 app = FastAPI()
+
+#serving react build files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Catch-all route to serve index.html
+@app.get("/{path_name:path}")
+async def serve_react_app(path_name: str):
+    file_path = os.path.join("static", "index.html")
+    return FileResponse(file_path)
 
 #handle CORS to allow api access
 origins = [
@@ -39,11 +51,9 @@ class PostModel(PostBase):
 class UserBase(BaseModel):
     username:str
     password:str
+ 
 
-# class UserInDB(UserBase):
-#     hashed_password:str   
-
-#db dependency
+#function for db session per client request
 def get_db():
     db  = sessionLocal()
     try:
@@ -51,7 +61,7 @@ def get_db():
     finally:
         db.close()
 
-#db injection (annotation)
+#client request dependency
 db_dependency = Annotated[Session,Depends(get_db)]
 
 #create DB tables
@@ -67,12 +77,15 @@ async def create_activity(post:PostBase, db:db_dependency):
     db.refresh(db_post)
     return db_post
 #READ
-@app.get('/activities/',status_code=status.HTTP_200_OK)
-async def read_activities(db:db_dependency):
+
+@app.get('/activities/', dependencies=[Depends(JWTBearer())], status_code=status.HTTP_200_OK)
+async def get_activities(token: str = Depends(decode_token), db: Session = Depends(db_dependency)):
+
     db_posts = db.query(models.Posts).all()
     if not db_posts:
-        raise HTTPException(status_code=404,detail = 'No listed activities')
-    return db_posts
+        raise HTTPException(status_code=404, detail='No listed activities')
+    
+    return {"msg": "Login successful", "token": token, "activities": db_posts}
 #DELETE
 @app.delete('/activities/{post_id}',status_code=status.HTTP_200_OK)
 async def delete_activity(post_id:int,db:db_dependency):
@@ -97,6 +110,7 @@ async def update_activity(post_id:int,updated_post:PostBase,db:db_dependency):
 
 
 #endpoints(authentication)
+
 @app.post('/register/')
 def register(user:UserBase,db:db_dependency):
     existing_user = db.query(models.User).filter(models.User.username == user.username).first()
@@ -122,7 +136,4 @@ def login(user:UserBase,db:db_dependency):
     access_token = create_access_token(data = {'sub':user.username})
     return {'access_token':access_token,'token_type':'bearer'}
 
-@app.get('/activities/',dependencies=[Depends(JWTBearer())])
-def get_protected_route(token:str = Depends(decode_token)):
-    return {'msg':'Login successful','token':token}
 

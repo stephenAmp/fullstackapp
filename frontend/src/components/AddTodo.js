@@ -8,9 +8,11 @@ import api from '../api'
 export default function AddTodo(){
     const [activity,setActivity] = useState('');
     const [activityList,setActivityList] = useState([])
+    const [isCompleted,setIsCompleted] = useState(false)
     const [deleteDialog,setDeleteDialog] = useState(false);
     const activityToDelete = useRef(null)
     const navigate = useNavigate()
+    const now = new Date()
 
 
     const fetchActivity = async()=>{
@@ -125,6 +127,12 @@ export default function AddTodo(){
 
         })
     }
+
+    function handleLogout(){
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
+
     const DeleteModal =()=>{
         return(
             <>
@@ -141,8 +149,11 @@ export default function AddTodo(){
     }
     return(
         <>
-        <div className="container" style={{marginTop:10}}>   
-            <div className="mb-3">    
+        <div className="container" style={{marginTop:10}}>
+            <div className='d-flex justify-content-end'>
+                        <button className='logout-btn' onClick={handleLogout}>Log out</button>
+            </div>
+            <div className="mb-3">
                 <label htmlFor='activity' className="form-label"><h3>Activity</h3></label>
                 <input id ='activity' className = 'form-control' type='text' value={activity} onKeyDown={handleKey} onChange={(e)=>setActivity(e.target.value)}/>
             </div>
@@ -153,7 +164,7 @@ export default function AddTodo(){
 {activityList.length > 0 ? (
                 <ul>
                 {activityList.map((activity)=>(
-                  <li key={activity.id} style={{margin:10,padding:10}}>{activity.activity} 
+                  <li key={activity.id} style={{textDecoration: isCompleted ? 'line-through':'none',margin:10,padding:10}}>{now.toLocaleTimeString()} {activity.activity} 
                   <button style={{marginLeft:2}} className ='btn btn-success' onClick={()=>handleUpdate(activity.id)}><i class="bi bi-pencil-square"> Edit</i></button>
                   <button style={{marginLeft:5}}className="btn btn-primary" onClick={()=>handleDelete(activity.id)}><i class="bi bi-trash3"> Delete</i></button>
                   </li>

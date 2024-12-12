@@ -266,4 +266,14 @@ body{
     transform: translateY(0); 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
   }
-  
+
+  .logout-btn{
+    padding: 10px 15px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
