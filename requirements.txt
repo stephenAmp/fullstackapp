@@ -3,7 +3,7 @@ pydantic
 uvicorn
 sqlalchemy
 pymysql
-pthon-dotenv
+python-dotenv
 python-jose
 passlib
 fastapi-jwt-auth
